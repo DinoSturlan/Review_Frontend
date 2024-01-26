@@ -1,0 +1,1 @@
+## Updated specifikacija backenda.
