@@ -17,7 +17,16 @@ id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" /
  <label for="exampleInputPassword1" class="line" style="margin-top: 30px;">Password</label>
  <input type="password" class="form-control"
 id="exampleInputPassword1" placeholder="Password" />
+</div>
+
+
+ <div class="form-group">
+ <label for="exampleInputPassword1" class="line" style="margin-top: 30px;">Repeat Password</label>
+ <input type="password" class="form-control"
+id="exampleInputPassword1" placeholder="Password*" />
  </div>
+
+
  <button type="submit" class="btn btn-primary" style="background-color: #8298e4; border-color: #8298e4; margin-top: 30px; border: 1px solid black;">Submit</button>
  </form>
  </div>
