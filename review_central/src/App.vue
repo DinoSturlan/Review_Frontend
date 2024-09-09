@@ -1,3 +1,4 @@
+
 <template>
   <div id="app">
 
@@ -14,8 +15,6 @@
       <router-link to="/">Home</router-link>
       <router-link to="/login">Login</router-link>
       <router-link to="/signup">Sign Up</router-link>
-      <router-link to="/createreview">Create Review</router-link>
-      <router-link to="/createrequest">Create Request</router-link>
       <router-link to="/profile">Profile</router-link>
       <router-link to="/about">About</router-link>
 
@@ -24,6 +23,18 @@
 
     <div :class="['main-content', { 'shifted': isNavOpen }]">
       <router-view />
+
+<div v-if="$route.path === '/'" class="plus-button-container">
+  <button @click="toggleMenu" class="plus-btn">+</button>
+  
+ 
+  <div :class="['expanding-menu', { 'open': isMenuOpen }]">
+  <router-link to="/createreview" class="menu-link">Create Review</router-link>
+  <router-link to="/createrequest" class="menu-link">Create Request</router-link>
+  </div>
+</div>
+
+
     </div>
 
   </div>
@@ -35,14 +46,22 @@ export default {
   data() {
     return {
       isNavOpen: false,
+      isMenuOpen: false,
     };
   },
   methods: {
     toggleNav() {
       this.isNavOpen = !this.isNavOpen;
     },
+
+    toggleMenu() {
+  this.isMenuOpen = !this.isMenuOpen;
+}
+
   },
 };
+
+
 </script>
 
 
@@ -134,6 +153,9 @@ nav {
   border: 1px solid black;
 }
 
+.sidebar-btn:hover {
+  background-color: #c2d8fa;
+}
 
 .sidebar-btn.shifted {
   left: 270px; 
@@ -155,5 +177,81 @@ nav {
 .main-content.shifted {
   margin-left: 200px;
 }
+
+
+
+
+
+
+
+
+
+.plus-button-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+}
+
+.plus-btn {
+  font-size: 30px;
+  cursor: pointer;
+  background-color: #8298e4;
+  color: #263646;
+  border: none;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s;
+  border: 1px solid black;
+}
+
+.plus-btn:hover {
+  background-color: #c2d8fa;
+}
+
+.expanding-menu {
+  background-color: #8298e4;
+  border-radius: 8px;
+  padding: 20px;
+  position: absolute;
+  top: 70px;
+  right: 0;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  transition: opacity 0.5s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.expanding-menu.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.menu-link {
+  padding: 10px 0;
+  color: #000000;
+  text-decoration: none;
+  text-align: center;
+  border-bottom: 1px solid #000000;
+  font-size: 25px;
+}
+
+.menu-link:last-child {
+  border-bottom: none;
+}
+
+.menu-link:hover {
+  background-color: #c2d8fa;
+}
+
+
+
 
 </style>
