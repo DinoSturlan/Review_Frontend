@@ -1,38 +1,127 @@
 <template>
- <div class="centered-container">
- <div class="centered-content">
- <h1 class="header-bg">Sign Up</h1>
- <div class="container">
- <div class="row">
- <div class="col-sm"></div>
- <div class="col-sm">
- <form>
- <div class="form-group">
- <label for="exampleInputEmail1" class="line">Email address</label>
- <input type="email" class="form-control"
-id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+  <div class="centered-container">
+    <div class="centered-content">
+      <h1 class="header-bg">Sign Up</h1>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm"></div>
+          <div class="col-sm">
 
- </div>
- <div class="form-group">
- <label for="exampleInputPassword1" class="line" style="margin-top: 30px;">Password</label>
- <input type="password" class="form-control"
-id="exampleInputPassword1" placeholder="Password" />
-</div>
+            <form @submit.prevent="handleSignup">
+              <div class="form-group">
+                <label for="exampleInputUsername" class="line">Username</label>
+                <input
+                  v-model="username"
+                  type="text"
+                  class="form-control"
+                  id="exampleInputUsername"
+                  aria-describedby="usernameHelp"
+                  placeholder="Enter username"
+                />
+              </div>
 
+              <div class="form-group">
+                <label
+                  for="exampleInputPassword1"
+                  class="line"
+                  style="margin-top: 30px;"
+                  >Password</label
+                >
+                <input
+                  v-model="password"
+                  type="password"
+                  class="form-control"
+                  id="exampleInputPassword1"
+                  placeholder="Password"
+                />
+              </div>
 
- <div class="form-group">
- <label for="exampleInputPassword1" class="line" style="margin-top: 30px;">Repeat Password</label>
- <input type="password" class="form-control"
-id="exampleInputPassword1" placeholder="Password*" />
- </div>
+              <div class="form-group">
+                <label
+                  for="confirmPassword"
+                  class="line"
+                  style="margin-top: 30px;"
+                  >Repeat Password</label
+                >
+                <input
+                  v-model="confirmPassword"
+                  type="password"
+                  class="form-control"
+                  id="confirmPassword"
+                  placeholder="Confirm Password"
+                />
+              </div>
 
+              <p v-if="errorMessage" class="text-danger">{{ errorMessage }}</p>
 
- <button type="submit" class="btn btn-primary" style="background-color: #8298e4; border-color: #8298e4; margin-top: 30px; border: 1px solid black;">Submit</button>
- </form>
- </div>
- <div class="col-sm"></div>
- </div>
- </div>
- </div>
- </div>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                style="
+                  background-color: #8298e4;
+                  border-color: #8298e4;
+                  margin-top: 30px;
+                  border: 1px solid black;
+                "
+              >
+                Submit
+              </button>
+            </form>
+          </div>
+          <div class="col-sm"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
+
+<script>
+import apiClient from '../axios';
+
+export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+      confirmPassword: '',
+      errorMessage: ''
+    };
+  },
+  methods: {
+    async handleSignup() {
+      try {
+
+
+        if (this.password !== this.confirmPassword) {
+          this.errorMessage = 'Passwords do not match';
+          return;
+        }
+
+        await apiClient.post('/auth/signup', {
+          username: this.username,
+          password: this.password,
+          confirmPassword: this.confirmPassword
+        });
+
+
+        this.$router.push('/login');
+
+        } catch (error) {
+        this.errorMessage = error.response?.data?.message || 'Signup failed';
+      }
+    }
+  }
+};
+</script>
+
+
+
+<style scoped>
+
+.text-danger {
+  color: #ff0000;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+</style>

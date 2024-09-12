@@ -17,7 +17,7 @@
       <router-link to="/signup">Sign Up</router-link>
       <router-link to="/profile">Profile</router-link>
       <router-link to="/about">About</router-link>
-
+      <router-link to="/login">Log out</router-link>
 
     </div>
 
@@ -177,12 +177,6 @@ nav {
 .main-content.shifted {
   margin-left: 200px;
 }
-
-
-
-
-
-
 
 
 

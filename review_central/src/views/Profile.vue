@@ -1,26 +1,23 @@
 <template>
-<div class="profile-container">
-
-    <h1>User profile</h1>
-
-
-    <div class="profile-pic"></div>
+  <div class="profile-container">
+    <h1>User Profile</h1>
 
 
-    <h2>Username</h2>
+    <h2>{{ username }}</h2>
     <p class="bio">Sample</p>
 
 
     <div class="line-thick"></div>
 
     <div class="profile-info">
-
       <div class="profile-item">
         <span class="label">Joined:</span>
-        <span class="info">Date Placeholder</span>
-      </div>
-      <div class="line-thin"></div>
 
+        <span class="info">{{ dateJoined }}</span>
+
+      </div>
+
+      <div class="line-thin"></div>
 
       <div class="profile-item">
         <span class="label">Reviews:</span>
@@ -28,13 +25,11 @@
       </div>
       <div class="line-thin"></div>
 
-
       <div class="profile-item">
         <span class="label">Requests:</span>
         <span class="info">Number Placeholder</span>
       </div>
       <div class="line-thin"></div>
-
 
       <div class="profile-item">
         <span class="label">Comments:</span>
@@ -42,19 +37,41 @@
       </div>
       <div class="line-thin"></div>
 
-
       <div class="profile-item">
         <span class="label">Solved requests:</span>
         <span class="info">Number Placeholder</span>
       </div>
       <div class="line-thin"></div>
-
-
     </div>
-</div>
-
-
+  </div>
 </template>
+
+
+
+<script>
+
+export default {
+  data() {
+    return {
+      username: '',
+      dateJoined: ''
+    };
+  },
+
+  created() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const userData = JSON.parse(atob(token.split('.')[1]));
+      this.username = userData.username;
+      this.dateJoined = new Date(userData.dateJoined).toLocaleDateString(); // Convert date to a readable format
+    }
+  }
+};
+
+
+</script>
+
+
 
 
 <style scoped>
@@ -73,15 +90,6 @@ h1 {
   font-size: 36px;
   font-weight: bold;
   margin-bottom: 80px;
-}
-
-
-.profile-pic {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  border: 3px solid #8298e4;
-  margin-bottom: 20px;
 }
 
 
@@ -137,4 +145,5 @@ h2 {
 .info {
   flex-grow: 0;
 }
+
 </style>
