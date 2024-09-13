@@ -13,7 +13,7 @@
       <div class="profile-item">
         <span class="label">Joined:</span>
 
-        <span class="info">{{ dateJoined }}</span>
+        <span class="info">{{ date }}</span>
 
       </div>
 
@@ -54,7 +54,7 @@ export default {
   data() {
     return {
       username: '',
-      dateJoined: ''
+      date: ''
     };
   },
 
@@ -63,7 +63,7 @@ export default {
     if (token) {
       const userData = JSON.parse(atob(token.split('.')[1]));
       this.username = userData.username;
-      this.dateJoined = new Date(userData.dateJoined).toLocaleDateString(); // Convert date to a readable format
+      this.date = new Date(userData.date).toLocaleDateString();
     }
   }
 };

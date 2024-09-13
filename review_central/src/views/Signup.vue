@@ -87,6 +87,7 @@ export default {
       errorMessage: ''
     };
   },
+  
   methods: {
     async handleSignup() {
       try {

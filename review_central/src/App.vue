@@ -17,7 +17,7 @@
       <router-link to="/signup">Sign Up</router-link>
       <router-link to="/profile">Profile</router-link>
       <router-link to="/about">About</router-link>
-      <router-link to="/login">Log out</router-link>
+      <router-link v-if="isLoggedIn" to="/login" @click.prevent="logout">Log out</router-link>
 
     </div>
 
@@ -49,19 +49,31 @@ export default {
       isMenuOpen: false,
     };
   },
+
+  computed: {
+    isLoggedIn() {
+      return !!localStorage.getItem('token');
+    }
+  },
+
   methods: {
     toggleNav() {
       this.isNavOpen = !this.isNavOpen;
     },
 
     toggleMenu() {
-  this.isMenuOpen = !this.isMenuOpen;
+      this.isMenuOpen = !this.isMenuOpen;
+    },
+
+    logout() {
+      localStorage.removeItem('token');
+      
+      window.location.reload();
+      this.$router.push('/login');
+    }
+
+  }
 }
-
-  },
-};
-
-
 </script>
 
 

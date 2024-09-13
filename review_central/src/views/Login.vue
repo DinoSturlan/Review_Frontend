@@ -83,8 +83,12 @@ export default {
 
         localStorage.setItem('token', response.data.token);
 
+        
+        this.$router.push('/').then(() => {
 
-        this.$router.push('/profile');
+          window.location.reload();
+      });
+
       } catch (error) {
 
         this.errorMessage = error.response?.data?.message || 'Login failed';
