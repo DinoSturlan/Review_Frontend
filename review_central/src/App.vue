@@ -24,13 +24,15 @@
     <div :class="['main-content', { 'shifted': isNavOpen }]">
       <router-view />
 
-<div v-if="$route.path === '/'" class="plus-button-container">
-  <button @click="toggleMenu" class="plus-btn">+</button>
-  
- 
-  <div :class="['expanding-menu', { 'open': isMenuOpen }]">
-  <router-link to="/createreview" class="menu-link">Create Review</router-link>
-  <router-link to="/createrequest" class="menu-link">Create Request</router-link>
+<div v-if="$route.path === '/'">
+
+  <div v-if="isLoggedIn" class="plus-button-container">
+    <button @click="toggleMenu" class="plus-btn">+</button>
+    
+    <div :class="['expanding-menu', { 'open': isMenuOpen }]">
+      <router-link to="/createreview" class="menu-link">Create Review</router-link>
+      <router-link to="/createrequest" class="menu-link">Create Request</router-link>
+    </div>
   </div>
 </div>
 
@@ -66,12 +68,13 @@ export default {
     },
 
     logout() {
+
       localStorage.removeItem('token');
       
-      window.location.reload();
-      this.$router.push('/login');
+      this.$router.push('/login').then(() => {
+        window.location.reload();
+      });
     }
-
   }
 }
 </script>

@@ -1,10 +1,53 @@
 <template>
   <div class="vertical-lines">
-   
-
+    <div class="posts-container">
+      <div
+        v-for="post in posts"
+        :key="post._id"
+        :class="post.type === 'review' ? 'review-post' : 'request-post'"
+        @click="navigateToPost(post)"
+        class="post-item"
+      >
+        <img :src="post.image" alt="Post Image" class="post-image" />
+        <div class="post-description">{{ post.description }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
+<script>
+import apiClient from '../axios';
+
+export default {
+  data() {
+    return {
+      posts: [],
+    };
+  },
+  methods: {
+
+    async fetchPosts() {
+      try {
+        const response = await apiClient.get('/posts');
+        this.posts = response.data;
+      } catch (error) {
+        console.error('Error fetching posts', error);
+      }
+    },
+
+    navigateToPost(post) {
+      if (post.type === 'review') {
+        this.$router.push({ name: 'review', params: { postId: post._id } });
+      } else if (post.type === 'request') {
+        this.$router.push({ name: 'request', params: { postId: post._id } });
+      }
+    },
+  },
+  created() {
+    this.fetchPosts();
+  },
+};
+</script>
 
 
 <style scoped>
@@ -44,6 +87,43 @@ body, html {
   right: 15%;
 }
 
+.posts-container {
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 60vw;
+  max-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.review-post {
+  background-color: #c2d8fa;
+}
+
+.request-post {
+  background-color: #8298e4;
+}
+
+.post-image {
+  width: 30%;
+  margin-right: 20px;
+  border-radius: 10px;
+}
+
+.post-description {
+  width: 70%;
+  font-size: 16px;
+  color: #263646;
+}
 
 </style>
 

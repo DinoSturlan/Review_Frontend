@@ -1,31 +1,76 @@
 <template>
   <div class="centered-container-create">
     <div class="centered-content-create">
-      <div>
-        <div class="about-container">
-          <h1>Create Review</h1>
-          <div class="line-thick"></div>
+      <h1>Create Review</h1>
+      <div class="line-thick"></div>
 
-          <div class="image-placeholder">
-            <p>Add image</p>
-          </div>
-
-          <div class="description-container">
-            <label for="description" class="description-label">Description: </label>
-            <textarea
-              id="description"
-              class="description-textbox"
-              placeholder="Description*"
-            ></textarea>
-          </div>
-
-          <button type="submit" class="btn btn-primary" style="background-color: #8298e4; border-color: #8298e4; margin-top: 30px; border: 1px solid black;">Post</button>
-
+      <form @submit.prevent="submitPost">
+        <div class="form-group">
+          <label for="image">Add image</label>
+          <input type="file" id="image" @change="onImageChange">
         </div>
-      </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea v-model="description" id="description" placeholder="Description"></textarea>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
     </div>
   </div>
 </template>
+
+<script>
+import apiClient from '../axios';
+
+export default {
+  data() {
+    return {
+      description: '',
+      image: null,
+      errorMessage: ''
+    };
+  },
+
+  methods: {
+    onImageChange(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.image = reader.result;
+      };
+      reader.readAsDataURL(file);
+    },
+
+    async submitPost() {
+      try {
+        const postType = this.$route.path.includes('review') ? 'review' : 'request';
+
+
+        const token = localStorage.getItem('token');
+
+
+        const response = await apiClient.post(
+          '/posts/create',
+          {
+            description: this.description,
+            image: this.image,
+            type: postType,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+        this.$router.push('/');
+      } catch (error) {
+        console.error('Error creating post:', error);
+        this.errorMessage = error.response?.data?.message || 'Failed to create post';
+      }
+    }
+  }
+};
+</script>
 
 
 <style scoped>

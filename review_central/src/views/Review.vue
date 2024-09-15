@@ -5,19 +5,17 @@
         <div class="about-container">
 
           <div class="image-placeholder">
-            <p>*image*</p>
+            <img :src="post.image" alt="Post Image" />
           </div>
 
           <div class="info">
-            <p>*Username*</p>
-            <p>*Date*</p>
+            <p>{{ post.username }}</p>
+            <p>{{ new Date(post.date).toLocaleDateString() }}</p>
           </div>
 
           <div class="description-container">
             <label for="description" class="description-label">Description: </label>
-            <p>
-              *Description*
-            </p> 
+            <p>{{ post.description }}</p>
           </div>
 
           <div class="line-long"></div>
@@ -25,8 +23,10 @@
           <div class="comment-container">
             <h2>Comments:</h2>
 
-
-
+            <div v-for="comment in post.comments" :key="comment._id" class="comment">
+              <p>{{ comment.username }} - {{ new Date(comment.date).toLocaleDateString() }}</p>
+              <p>{{ comment.text }}</p>
+            </div>
           </div>
 
         </div>
@@ -34,6 +34,30 @@
     </div>
   </div>
 </template>
+
+
+
+<script>
+import apiClient from '../axios';
+
+export default {
+  props: ['postId'],
+  data() {
+    return {
+      post: {},
+    };
+  },
+  async created() {
+    try {
+
+      const response = await apiClient.get(`/posts/${this.$route.params.postId}`);
+      this.post = response.data;
+    } catch (error) {
+      console.error('Error fetching post data', error);
+    }
+  },
+};
+</script>
 
 
 <style scoped>
@@ -99,14 +123,21 @@ h2 {
 
 
 .image-placeholder {
-  width: 300px;
-  height: 200px;
-  border: 2px dashed #263646;
+  width: 500px;
+  height: 400px;
+  border: 2px #263646;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
   background-color: #ffffff;
+  overflow: hidden;
+}
+
+.image-placeholder img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 .image-placeholder p {
