@@ -6,10 +6,14 @@
         :key="post._id"
         :class="post.type === 'review' ? 'review-post' : 'request-post'"
         @click="navigateToPost(post)"
-        class="post-item"
-      >
+        class="post-item">
         <img :src="post.image" alt="Post Image" class="post-image" />
-        <div class="post-description">{{ post.description }}</div>
+
+        <div class="post-description-container">
+          <label for="description" class="description-label">User: {{ post.username }}, {{ new Date(post.date).toLocaleDateString() }}</label>
+          <div class="post-description">{{ post.description }}</div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -61,30 +65,30 @@ body, html {
 
 
 
-
-
 .vertical-lines {
-  position: relative;
-  min-height: 100vh;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 
 .vertical-lines::before,
 .vertical-lines::after {
   content: '';
-  position: absolute;
+  position: fixed;
   top: 0;
-  bottom: 0;
-  height: 100%;
   width: 3px;
   background-color: #263646;
+  height: 100vh;
 }
 
 .vertical-lines::before {
-  left: 15%;
+  left: 20%;
 }
 
 .vertical-lines::after {
-  right: 15%;
+  right: 20%;
 }
 
 .posts-container {
@@ -94,11 +98,12 @@ body, html {
   max-height: 200px;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 }
 
 .post-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 15px;
   margin-bottom: 15px;
   border-radius: 20px;
@@ -114,15 +119,38 @@ body, html {
 }
 
 .post-image {
-  width: 30%;
+  height: 150px;
+  width: auto;
   margin-right: 20px;
   border-radius: 10px;
 }
 
 .post-description {
-  width: 70%;
   font-size: 16px;
   color: #263646;
+  width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-height: 1.5;
+  max-height: calc(1.5em * 3);
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.post-description-container {
+  width: 100%;
+  display: block;
+  text-align: left;
+}
+
+.description-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #263646;
+  display: block;
 }
 
 </style>

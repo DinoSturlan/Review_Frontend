@@ -11,7 +11,9 @@
 
     <div :class="['sidenav', { 'active': isNavOpen }]">
 
-
+      <div style = "margin-bottom: 100px">
+        <img :src="logo" alt="Logo" class="logo" />
+      </div>
       <router-link to="/">Home</router-link>
       <router-link to="/login">Login</router-link>
       <router-link to="/signup">Sign Up</router-link>
@@ -49,6 +51,7 @@ export default {
     return {
       isNavOpen: false,
       isMenuOpen: false,
+      logo: require('@/assets/logo.png'),
     };
   },
 
@@ -260,7 +263,10 @@ nav {
   background-color: #c2d8fa;
 }
 
-
+.logo {
+  width: 150px;
+  height: auto;
+}
 
 
 </style>

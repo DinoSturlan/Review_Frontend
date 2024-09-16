@@ -5,11 +5,11 @@
       <div class="line-thick"></div>
 
       <form @submit.prevent="submitPost">
-        <div class="form-group">
-          <label for="image">Add image</label>
+        <div class="form-group" style = "margin-bottom: 70px;">
+          <label for="image">Add image:  </label>
           <input type="file" id="image" @change="onImageChange">
         </div>
-        <div class="form-group">
+        <div class="form-group" style = "margin-bottom: 70px;">
           <label for="description">Description:</label>
           <textarea v-model="description" id="description" placeholder="Description"></textarea>
         </div>
@@ -86,7 +86,7 @@ export default {
 
 .centered-content-create {
   width: 60vw;
-  height: auto;
+  height: 30vw;
   padding: 20px;
   border-radius: 10px;
   color: #2c3e50;
@@ -112,6 +112,7 @@ export default {
 h1 {
   font-size: 36px;
   font-weight: bold;
+  margin-top: 70px;
 }
 
 
@@ -121,6 +122,7 @@ h1 {
   background-color: #263646;
   margin-bottom: 70px;
 }
+
 
 
 
@@ -151,7 +153,7 @@ h1 {
 
 .description-label {
   font-size: 18px;
-  color: #000000;
+  color: #263646;
   margin-bottom: 10px;
   display: block;
 }
@@ -167,6 +169,7 @@ h1 {
   font-size: 16px;
   color: #2c3e50;
 }
+
 
 .text-container {
   width: 80%;

@@ -2,44 +2,27 @@
   <div class="profile-container">
     <h1>User Profile</h1>
 
-
     <h2>{{ username }}</h2>
-    <p class="bio">Sample</p>
-
 
     <div class="line-thick"></div>
 
     <div class="profile-info">
       <div class="profile-item">
         <span class="label">Joined:</span>
-
         <span class="info">{{ date }}</span>
-
       </div>
 
       <div class="line-thin"></div>
 
       <div class="profile-item">
-        <span class="label">Reviews:</span>
-        <span class="info">Number Placeholder</span>
-      </div>
-      <div class="line-thin"></div>
-
-      <div class="profile-item">
-        <span class="label">Requests:</span>
-        <span class="info">Number Placeholder</span>
+        <span class="label">Posts:</span>
+        <span class="info">{{ posts }}</span>
       </div>
       <div class="line-thin"></div>
 
       <div class="profile-item">
         <span class="label">Comments:</span>
-        <span class="info">Number Placeholder</span>
-      </div>
-      <div class="line-thin"></div>
-
-      <div class="profile-item">
-        <span class="label">Solved requests:</span>
-        <span class="info">Number Placeholder</span>
+        <span class="info">{{ comments }}</span>
       </div>
       <div class="line-thin"></div>
     </div>
@@ -49,26 +32,40 @@
 
 
 <script>
+import apiClient from '../axios';
 
 export default {
   data() {
     return {
       username: '',
-      date: ''
+      date: '',
+      posts: 0,
+      comments: 0,
     };
   },
 
-  created() {
+  async created() {
     const token = localStorage.getItem('token');
     if (token) {
       const userData = JSON.parse(atob(token.split('.')[1]));
       this.username = userData.username;
       this.date = new Date(userData.date).toLocaleDateString();
+
+      try {
+        const response = await apiClient.get('/profile/stats', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        this.posts = response.data.posts;
+        this.comments = response.data.comments;
+      } catch (error) {
+        console.error('Error fetching user stats:', error);
+      }
     }
-  }
+  },
 };
-
-
 </script>
 
 
@@ -96,13 +93,6 @@ h1 {
 h2 {
   font-size: 28px;
   margin-bottom: 5px;
-}
-
-
-.bio {
-  font-size: 16px;
-  color: #575e66;
-  margin-bottom: 20px;
 }
 
 
