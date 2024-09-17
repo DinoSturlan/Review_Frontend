@@ -27,10 +27,20 @@
       <router-view />
 
 <div v-if="$route.path === '/'">
-
-  <div v-if="isLoggedIn" class="plus-button-container">
+  <div v-if="isLoggedIn" class="button-container">
+    <button @click="toggleCategoryMenu" class="category-btn">Categories</button>
     <button @click="toggleMenu" class="plus-btn">+</button>
     
+    <div :class="['expanding-menu-categories', { 'open': isCategoryMenuOpen }]">
+      <label>
+        <input type="checkbox" value="All" v-model="selectedCategories" /> All
+      </label>
+      <label v-for="category in categories" :key="category">
+        <input type="checkbox" :value="category" v-model="selectedCategories" /> {{ category }}
+      </label>
+      <button @click="applyCategoryFilter" style="margin-top: 10px">Select</button>
+    </div>
+
     <div :class="['expanding-menu', { 'open': isMenuOpen }]">
       <router-link to="/createreview" class="menu-link">Create Review</router-link>
       <router-link to="/createrequest" class="menu-link">Create Request</router-link>
@@ -51,7 +61,14 @@ export default {
     return {
       isNavOpen: false,
       isMenuOpen: false,
+      isCategoryMenuOpen: false,
+      selectedCategories: ['All'],
       logo: require('@/assets/logo.png'),
+      categories: [
+        'Electronics', 'Software', 'Clothes', 'Health/Beauty', 'Home',
+        'Food/Beverage', 'Travel', 'Auto/Moto', 'Education', 'Art', 'Garden',
+        'Sports', 'Media', 'Kids', 'Pets', 'Office', 'Gifts', 'Services', 'Other'
+    ]
     };
   },
 
@@ -68,7 +85,30 @@ export default {
 
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
+      this.isCategoryMenuOpen = false;
     },
+
+    toggleCategoryMenu() {
+      this.isCategoryMenuOpen = !this.isCategoryMenuOpen;
+      this.isMenuOpen = false;
+    },
+
+    applyCategoryFilter() {
+        if (this.selectedCategories.includes('All')) {
+          this.$router.push({
+            name: 'Home', 
+           query: { categories: 'all' }
+            });
+       } else {
+
+         this.$router.push({
+            name: 'Home',
+            query: { categories: this.selectedCategories.join(',') }
+         });
+  }
+
+        this.isCategoryMenuOpen = false;
+      },
 
     logout() {
 
@@ -241,7 +281,30 @@ nav {
   visibility: hidden;
 }
 
+.expanding-menu-categories {
+  background-color: #8298e4;
+  color: black;
+  border-radius: 8px;
+  padding: 20px;
+  position: absolute;
+  top: 70px;
+  right: 0;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  transition: opacity 0.5s ease;
+  opacity: 0;
+  visibility: hidden;
+  align-items: flex-start;
+}
+
 .expanding-menu.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.expanding-menu-categories.open {
   opacity: 1;
   visibility: visible;
 }
@@ -266,6 +329,32 @@ nav {
 .logo {
   width: 150px;
   height: auto;
+}
+
+.button-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+
+.category-btn {
+  font-size: 20px;
+  background-color: #8298e4;
+  color: #263646;
+  border: 1px solid black;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.3s;
+  margin-right: 10px;
+}
+
+.category-btn:hover {
+  background-color: #c2d8fa;
 }
 
 

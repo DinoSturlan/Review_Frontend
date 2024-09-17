@@ -15,7 +15,7 @@
 
         <p>
         This app was made by student Dino Šturlan as a student project for the Web Applications class of the Pula Faculty of Informatics, under the mentorship of doc.dr.sc Nikola Tanković.
-        For any questions regarding this app feel free to use this email adress: dsturlan@student.unipu.hr
+        For any questions regarding this app, feel free to use this email adress: dsturlan@student.unipu.hr
         </p>
 
 

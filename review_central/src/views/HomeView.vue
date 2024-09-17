@@ -7,10 +7,12 @@
         :class="post.type === 'review' ? 'review-post' : 'request-post'"
         @click="navigateToPost(post)"
         class="post-item">
-        <img :src="post.image" alt="Post Image" class="post-image" />
+
+        <img v-if="post.image" :src="post.image" alt="Post Image" class="post-image" />
 
         <div class="post-description-container">
-          <label for="description" class="description-label">User: {{ post.username }}, {{ new Date(post.date).toLocaleDateString() }}</label>
+          <label for="description" class="description-label">User: {{ post.username }}&nbsp;&nbsp;-&nbsp;&nbsp;{{ new Date(post.date).toLocaleDateString() }}</label>
+          <label for="description" class="description-label">Category: {{ post.category }}</label>
           <div class="post-description">{{ post.description }}</div>
         </div>
 
@@ -23,16 +25,40 @@
 import apiClient from '../axios';
 
 export default {
+
+  props: {
+    categories: {
+      type: [String, Array],
+      default: 'all',
+    },
+  },
+
   data() {
     return {
       posts: [],
     };
   },
+
+  watch: {
+    categories: {
+      immediate: true,
+      handler: 'fetchPosts',
+    },
+  },
+
   methods: {
 
     async fetchPosts() {
       try {
-        const response = await apiClient.get('/posts');
+        let response;
+        if (this.categories === 'all' || !this.categories.length) {
+          response = await apiClient.get('/posts');
+        } else {
+          const categoryList = Array.isArray(this.categories) ? this.categories.join(',') : this.categories;
+          response = await apiClient.get('/posts', {
+            params: { categories: categoryList },
+          });
+        }
         this.posts = response.data;
       } catch (error) {
         console.error('Error fetching posts', error);

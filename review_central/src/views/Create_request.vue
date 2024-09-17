@@ -6,13 +6,39 @@
 
       <form @submit.prevent="submitPost">
         <div class="form-group" style = "margin-bottom: 70px;">
-          <label for="image">Add image:  </label>
+          <label for="image">Add image (optional):  </label>
           <input type="file" id="image" @change="onImageChange">
         </div>
         <div class="form-group" style = "margin-bottom: 70px;">
           <label for="description">Description:</label>
           <textarea v-model="description" id="description" placeholder="Description"></textarea>
         </div>
+
+        <div class="form-group" style="margin-bottom: 70px;">
+           <label for="category">Category:</label>
+           <select v-model="category" id="category" required>
+           <option value="Electronics">Electronics</option>
+           <option value="Software">Software</option>
+           <option value="Clothes">Clothes</option>
+           <option value="Health/Beauty">Health/Beauty</option>
+           <option value="Home">Home</option>
+           <option value="Food/Beverage">Food/Beverage</option>
+           <option value="Travel">Travel</option>
+           <option value="Auto/Moto">Auto/Moto</option>
+           <option value="Education">Education</option>
+           <option value="Art">Art</option>
+           <option value="Garden">Garden</option>
+           <option value="Sports">Sports</option>
+           <option value="Media">Media</option>
+           <option value="Kids">Kids</option>
+           <option value="Pets">Pets</option>
+           <option value="Office">Office</option>
+           <option value="Gifts">Gifts</option>
+           <option value="Services">Services</option>
+           <option value="Other">Other</option>
+           </select>
+           </div>
+
         <button type="submit">Submit</button>
       </form>
     </div>
@@ -27,7 +53,8 @@ export default {
     return {
       description: '',
       image: null,
-      errorMessage: ''
+      errorMessage: '',
+      category: ''
     };
   },
 
@@ -45,18 +72,17 @@ export default {
       try {
         const postType = this.$route.path.includes('review') ? 'review' : 'request';
 
+
         const token = localStorage.getItem('token');
 
-        if (!token) {
-       throw new Error('User not authenticated');
-     }
 
-        await apiClient.post(
+        const response = await apiClient.post(
           '/posts/create',
           {
             description: this.description,
             image: this.image,
             type: postType,
+            category: this.category,
           },
           {
             headers: {
@@ -74,27 +100,27 @@ export default {
 };
 </script>
 
+
 <style scoped>
 
 .centered-container-create {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 
 .centered-content-create {
   width: 60vw;
-  height: 30vw;
+  min-height: auto;
   padding: 20px;
   border-radius: 10px;
-  color: #2c3e50;
+  color: #000000;
   background-color: #8298e4;
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
 
 }
@@ -119,7 +145,7 @@ h1 {
 .line-thick {
   width: 70%;
   height: 3px;
-  background-color: #263646;
+  background-color: #000000;
   margin-bottom: 70px;
 }
 
@@ -153,7 +179,7 @@ h1 {
 
 .description-label {
   font-size: 18px;
-  color: #263646;
+  color: #000000;
   margin-bottom: 10px;
   display: block;
 }
@@ -163,7 +189,7 @@ h1 {
 .description-textbox {
   width: 32vw;
   height: 100px;
-  border: 1px solid #263646;
+  border: 1px solid #000000;
   border-radius: 5px;
   padding: 10px;
   font-size: 16px;
@@ -181,11 +207,51 @@ h1 {
 .text-container p {
   font-size: 18px;
   line-height: 1.6;
-  color: #263646;
+  color: #000000;
 }
 
+.form-group {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
 
+.form-group label {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
 
+textarea {
+  width: 120%;
+  height: 150px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  color: #2c3e50;
+  resize: none;
+}
 
+select {
+  width: 50%;
+}
+
+button {
+  background-color: #c2d8fa;
+  color: rgb(0, 0, 0);
+  padding: 10px 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  margin-bottom: 40px;
+}
+
+button:hover {
+  background-color: #8298e4;
+}
 
 </style>

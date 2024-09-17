@@ -4,13 +4,14 @@
       <div>
         <div class="about-container">
 
-          <div class="image-placeholder">
-            <img :src="post.image" alt="Post Image" />
+          <div v-if="post.image" class="image-placeholder">
+            <img :src="post.image">
           </div>
 
           <div class="info">
             <p>{{ post.username }}</p>
             <p>{{ new Date(post.date).toLocaleDateString() }}</p>
+            <p style = "font-size: 16px">Category: {{ post.category }}</p>
           </div>
 
           <div class="description-container">
@@ -185,7 +186,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: auto;
 }
 
 
@@ -202,7 +203,8 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-
+  min-height: 100vh;
+  margin-top: 20px;
 }
 
 
@@ -258,21 +260,19 @@ h2 {
 
 
 .image-placeholder {
-  width: 500px;
-  height: 400px;
-  border: 2px #263646;
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
   margin-bottom: 20px;
-  background-color: #ffffff;
-  overflow: hidden;
+  position: relative;
 }
 
 .image-placeholder img {
-  max-width: 100%;
-  max-height: 100%;
+  height: 25vw;
+  width: auto;
   object-fit: contain;
+  margin-top: 20px;
+  border: 10px solid #8298e4;
 }
 
 .image-placeholder p {

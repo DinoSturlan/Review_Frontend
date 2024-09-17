@@ -4,9 +4,11 @@ import HomeView from '../views/HomeView.vue'
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    name: 'Home',
+    component: HomeView,
+    props: (route) => ({ categories: route.query.categories || 'all' }),
   },
+
   {
     path: '/login',
     name: 'login',
